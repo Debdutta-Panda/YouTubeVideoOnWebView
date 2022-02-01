@@ -12,7 +12,6 @@ maven { url 'https://jitpack.io' }
 implementation 'com.github.Debdutta-Panda:YouTubeVideoOnWebView:<latest_version>'
 
 # Usage
-
 ```
 <com.youtubevideoviewlibrary.YoutubeView
   android:id="@+id/yv_video"
