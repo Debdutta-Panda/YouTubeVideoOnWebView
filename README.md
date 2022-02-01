@@ -10,7 +10,7 @@ maven { url 'https://jitpack.io' }
 ## Module level
 ```
 implementation 'com.github.Debdutta-Panda:YouTubeVideoOnWebView:<latest_version>'
-
+```
 # Usage
 ```
 <com.youtubevideoviewlibrary.YoutubeView
