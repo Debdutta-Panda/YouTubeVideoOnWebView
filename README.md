@@ -12,6 +12,10 @@ maven { url 'https://jitpack.io' }
 implementation 'com.github.Debdutta-Panda:YouTubeVideoOnWebView:<latest_version>'
 ```
 # Usage
+## Manifest
+```
+<uses-permission android:name="android.permission.INTERNET"/>
+```
 ```
 <com.youtubevideoviewlibrary.YoutubeView
   android:id="@+id/yv_video"
@@ -19,4 +23,10 @@ implementation 'com.github.Debdutta-Panda:YouTubeVideoOnWebView:<latest_version>
 ```
 ```
 yv_video?.setVideo(true,"https://www.youtube.com/embed/e1C5WIfZ89s", startTime = "600")
+```
+```
+override fun onResume() {
+        super.onResume()
+        yv_video?.exitFullScreen()
+    }
 ```
