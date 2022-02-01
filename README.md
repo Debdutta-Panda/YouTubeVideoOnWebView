@@ -17,3 +17,6 @@ implementation 'com.github.Debdutta-Panda:YouTubeVideoOnWebView:<latest_version>
   android:id="@+id/yv_video"
   android:layout_width="match_parent"/>
 ```
+```
+yv_video?.setVideo(true,"https://www.youtube.com/embed/e1C5WIfZ89s", startTime = "600")
+```
