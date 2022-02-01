@@ -13,7 +13,7 @@ implementation 'com.github.Debdutta-Panda:YouTubeVideoOnWebView:<latest_version>
 
 # Usage
 
-```xml
+```
 <com.youtubevideoviewlibrary.YoutubeView
   android:id="@+id/yv_video"
   android:layout_width="match_parent"/>
