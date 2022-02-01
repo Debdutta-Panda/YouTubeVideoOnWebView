@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">VideoWebView</string>
+    <string name="loading_video">Loading Video</string>
+</resources>
