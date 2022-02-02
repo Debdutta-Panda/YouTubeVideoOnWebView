@@ -1,15 +1,29 @@
 package com.youtubevideoviewlibrary;
 
 import android.app.Activity
-import android.content.Context
-import android.content.Intent
+import android.content.*
+import android.net.ConnectivityManager
+import android.net.Network
 import android.os.Handler
 import android.os.Looper
 import android.util.AttributeSet
 import android.util.Log
-import android.webkit.*
+import android.webkit.WebChromeClient
+import android.webkit.WebSettings
+import android.webkit.WebView
+import android.webkit.WebViewClient
+import androidx.core.content.ContextCompat
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
+
 
 class YoutubeView : WebView {
+    var networkAware = true
+    var con: ConnectivityListener? = null
+    val obs = Observer<ConnectivityListener.Net> {
+        setUrl(lastUrl)
+    }
     private var lastTag = ""
     companion object{
         val map = mutableMapOf<String,Int>()
@@ -109,10 +123,17 @@ class YoutubeView : WebView {
     }
 
     private fun init() {
-        /*settings.defaultTextEncodingName = "utf-8"
+        settings.defaultTextEncodingName = "utf-8"
         settings.javaScriptEnabled = true
         settings.pluginState = WebSettings.PluginState.ON
-        webChromeClient = MyWebChromeClient(MyWebChromeClient.Callbacks(
+
+
+        if(networkAware){
+            con = ConnectivityListener(context)
+            con?.net?.observeForever(obs)
+        }
+
+        /*webChromeClient = MyWebChromeClient(MyWebChromeClient.Callbacks(
 
         ))
         webViewClient = WebViewClient()*/
@@ -146,16 +167,18 @@ class YoutubeView : WebView {
                                     ViewGroup.LayoutParams.MATCH_PARENT
                                 ))
                     }*/
-                    (context as? Activity)?.startActivity(
-                        Intent(
-                            (context as? Activity),
-                            VideoActivity::class.java
-                        ).apply {
-                            putExtra("url", url)
-                            putExtra("time", time.toInt())
-                            lastTag = System.currentTimeMillis().toString() + "_yt"
-                            putExtra("tag", lastTag)
-                        })
+                    getMyActivity()?.runOnUiThread {
+                        getMyActivity()?.startActivity(
+                            Intent(
+                                (context as? Activity),
+                                VideoActivity::class.java
+                            ).apply {
+                                putExtra("url", url)
+                                putExtra("time", time.toInt())
+                                lastTag = System.currentTimeMillis().toString() + "_yt"
+                                putExtra("tag", lastTag)
+                            })
+                    }
                 },
                 removeVideoContainer = { time, it ->
                     /*runOnUiThread {
@@ -184,24 +207,40 @@ class YoutubeView : WebView {
         }
     }
 
+    private fun getMyActivity(): Activity? {
+        var c = context
+        while (c is ContextWrapper) {
+            if (c is Activity) {
+                return c
+            }
+            c = c.baseContext
+        }
+        return null
+    }
+
     private fun setUrl(url: String) {
         if (url.isEmpty()) {
             return
         }
         lastUrl = url
-        loadUrl(lastUrl)//temporary
-
-        /*val connection = ConnectivityListener(context).isConnected()
-        if (connection.on) {
-            if (connection.metered) {
-                context.toast(R.string.video_on_metered_warning.string())
+        if(networkAware){
+            val connection = con?.isConnected()
+            if (connection?.on==true) {
+                if (connection.metered) {
+                    //context.toast(R.string.video_on_metered_warning.string())
+                }
+                loadUrl(lastUrl)
+                lastLoaded = true
+            } else {
+                loadNoInternet()
             }
+        }
+        else{
             loadUrl(lastUrl)
-            lastLoaded = true
-        } else {
-            loadNoInternet()
-        }*/
+        }
     }
+
+
 
     private fun loadNoInternet() {
         //loadUrl("file:///android_asset/video_internet_error.html")
@@ -209,13 +248,15 @@ class YoutubeView : WebView {
     }
 
     private fun getNoInternetContent(): String {
-        /*return VideoNoInternetContent.compose()*/
+        return VideoNoInternetContent.compose()
         return ""
     }
 
     override fun onDetachedFromWindow() {
+        con?.net?.removeObserver(obs)
+        con?.destroy()
+        con = null
         super.onDetachedFromWindow()
-        /*net.removeObserver(observer)*/
     }
 
     /*override fun loadUrl(url: String?) {
@@ -316,6 +357,8 @@ class YoutubeView : WebView {
             seekTo(time)
         }
     }
+
+
 }
 
 /*

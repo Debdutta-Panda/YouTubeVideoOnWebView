@@ -23,7 +23,9 @@ class VideoActivity : AppCompatActivity() {
                 notifyTime = { tag, it ->
                     if (tag == "on_back") {
                         YoutubeView.timeEntry(intent?.getStringExtra("tag") ?: "", it.toInt())
-                        finish()
+                        runOnUiThread {
+                            finish()
+                        }
                     }
                 },
                 onFullScreenChanged = {
