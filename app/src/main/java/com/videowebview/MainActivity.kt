@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import android.webkit.WebView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.commit
 import com.youtubevideoviewlibrary.YoutubeView
 
 class MainActivity : AppCompatActivity() {
@@ -17,6 +18,11 @@ class MainActivity : AppCompatActivity() {
         yv_video = findViewById<View>(R.id.yv_video) as YoutubeView
 
         yv_video?.setVideo(true,"https://www.youtube.com/embed/e1C5WIfZ89s", startTime = "600")
+
+        val fm = supportFragmentManager
+        fm.commit {
+            replace(R.id.fragmentContainerView, HomeFragment.newInstance())
+        }
     }
 
     override fun onBackPressed() {

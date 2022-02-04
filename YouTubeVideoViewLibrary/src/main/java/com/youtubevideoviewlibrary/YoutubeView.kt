@@ -19,6 +19,7 @@ import androidx.lifecycle.Observer
 
 
 class YoutubeView : WebView {
+    private var activityResolver: (()->Activity?)? = null
     var networkAware = true
     var con: ConnectivityListener? = null
     val obs = Observer<ConnectivityListener.Net> {
@@ -145,7 +146,8 @@ class YoutubeView : WebView {
     }
 
     private var playInstantly = false
-    fun setVideo(fullscreenEnabled: Boolean,url: String = "", id: String = "", startTime: String = ""){
+    fun setVideo(fullscreenEnabled: Boolean,url: String = "", id: String = "", startTime: String = "",activityResolver: (()->Activity?)?){
+        this.activityResolver = activityResolver
         /*****************************/
         setup(fullscreenEnabled,false,
             MyWebChromeClient.Callbacks(
@@ -208,14 +210,15 @@ class YoutubeView : WebView {
     }
 
     private fun getMyActivity(): Activity? {
-        var c = context
+        return activityResolver?.invoke()
+        /*var c = context
         while (c is ContextWrapper) {
             if (c is Activity) {
                 return c
             }
             c = c.baseContext
         }
-        return null
+        return null*/
     }
 
     private fun setUrl(url: String) {
@@ -357,6 +360,8 @@ class YoutubeView : WebView {
             seekTo(time)
         }
     }
+
+
 
 
 }

@@ -39,7 +39,9 @@ class VideoActivity : AppCompatActivity() {
                     null
                 })
         )
-        yv_video?.setVideo(false,intent?.getStringExtra("url")?:"", startTime = (intent?.getIntExtra("time",0)?:0).toString())
+        yv_video?.setVideo(false,intent?.getStringExtra("url")?:"", startTime = (intent?.getIntExtra("time",0)?:0).toString()){
+            this
+        }
 
     }
 
