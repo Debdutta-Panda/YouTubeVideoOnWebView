@@ -1,5 +1,5 @@
 # YouTubeVideoOnWebView
-![image](https://user-images.githubusercontent.com/92369023/152109203-3491f70d-c3e4-4ee6-bcdb-11916bb8d764.png)
+![image](https://user-images.githubusercontent.com/92369023/152477473-d6697a9d-0fcc-4fd7-bc76-d1adf825531d.png)
 
 # Installation
 
@@ -25,7 +25,9 @@ implementation 'com.github.Debdutta-Panda:YouTubeVideoOnWebView:<latest_version>
 ```
 ## Activity
 ```
-yv_video?.setVideo(true,"https://www.youtube.com/embed/e1C5WIfZ89s", startTime = "600")
+yv_video?.setVideo(true,"https://www.youtube.com/embed/e1C5WIfZ89s", startTime = "600"){
+    activity
+}
 ```
 ```
 override fun onResume() {
