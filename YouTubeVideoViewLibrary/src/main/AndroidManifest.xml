@@ -9,7 +9,7 @@ package="com.youtubevideoviewlibrary">
 
     <activity
         android:name="com.youtubevideoviewlibrary.VideoActivity"
-        android:exported="false"
+        android:exported="true"
         android:screenOrientation="landscape"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"
         />
