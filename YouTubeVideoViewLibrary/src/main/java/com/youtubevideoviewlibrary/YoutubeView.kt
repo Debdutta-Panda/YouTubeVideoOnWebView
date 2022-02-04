@@ -1,9 +1,8 @@
 package com.youtubevideoviewlibrary;
 
 import android.app.Activity
-import android.content.*
-import android.net.ConnectivityManager
-import android.net.Network
+import android.content.Context
+import android.content.Intent
 import android.os.Handler
 import android.os.Looper
 import android.util.AttributeSet
@@ -13,8 +12,6 @@ import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 
 
@@ -171,7 +168,19 @@ class YoutubeView : WebView {
                     }*/
                     getMyActivity()?.apply {
                         runOnUiThread {
-                            startActivity(
+                            val intent = Intent()
+                            intent.setClassName(
+                                this,
+                                "com.youtubevideoviewlibrary.VideoActivity"
+                            ).apply {
+                                putExtra("url", url)
+                                putExtra("time", time.toInt())
+                                lastTag = System.currentTimeMillis().toString() + "_yt"
+                                putExtra("tag", lastTag)
+                            }
+                            startActivity(intent)
+                            /*startActivity(
+
                                 Intent(
                                     this,
                                     VideoActivity::class.java
@@ -180,7 +189,7 @@ class YoutubeView : WebView {
                                     putExtra("time", time.toInt())
                                     lastTag = System.currentTimeMillis().toString() + "_yt"
                                     putExtra("tag", lastTag)
-                                })
+                                })*/
                         }
                     }
                 },
