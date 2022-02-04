@@ -17,7 +17,9 @@ class MainActivity : AppCompatActivity() {
 
         yv_video = findViewById<View>(R.id.yv_video) as YoutubeView
 
-        yv_video?.setVideo(true,"https://www.youtube.com/embed/e1C5WIfZ89s", startTime = "600")
+        yv_video?.setVideo(true,"https://www.youtube.com/embed/e1C5WIfZ89s", startTime = "600"){
+            this
+        }
 
         val fm = supportFragmentManager
         fm.commit {
