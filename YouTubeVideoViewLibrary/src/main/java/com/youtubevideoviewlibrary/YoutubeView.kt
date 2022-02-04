@@ -169,17 +169,19 @@ class YoutubeView : WebView {
                                     ViewGroup.LayoutParams.MATCH_PARENT
                                 ))
                     }*/
-                    getMyActivity()?.runOnUiThread {
-                        getMyActivity()?.startActivity(
-                            Intent(
-                                (context as? Activity),
-                                VideoActivity::class.java
-                            ).apply {
-                                putExtra("url", url)
-                                putExtra("time", time.toInt())
-                                lastTag = System.currentTimeMillis().toString() + "_yt"
-                                putExtra("tag", lastTag)
-                            })
+                    getMyActivity()?.apply {
+                        runOnUiThread {
+                            startActivity(
+                                Intent(
+                                    this,
+                                    VideoActivity::class.java
+                                ).apply {
+                                    putExtra("url", url)
+                                    putExtra("time", time.toInt())
+                                    lastTag = System.currentTimeMillis().toString() + "_yt"
+                                    putExtra("tag", lastTag)
+                                })
+                        }
                     }
                 },
                 removeVideoContainer = { time, it ->
